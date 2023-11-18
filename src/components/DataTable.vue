@@ -1,20 +1,25 @@
 <template>
+  <div class="table__wrapper">
   <table class="table">
     <colgroup>
       <col v-for="group in groups" width="50px" />
       <col
         v-for="column in columns"
         :style="{
+          minWidth: column?.minWidth ? column.minWidth : '50px',
           width: isSelectCheckboxField(column) ? '50px' : column?.width ? column.width : null,
         }"
       />
     </colgroup>
     <thead class="table__head">
       <tr ref="thead">
-        <td v-for="group in groups" style="width: 50px"></td>
+        <td v-for="group in groups" style="width: 50px; background-color: #f6f7f9; border: 1px solid #e2e5e8;"></td>
         <td
           :data-field="column?.field"
           class="table__cell"
+          :style="{
+            textAlign: isSelectCheckboxField(column) ? 'center' : null,
+          }"
           v-for="column in columns"
           :key="column?.field"
         >
@@ -38,7 +43,7 @@
               <el-icon><Operation /></el-icon>
             </div>
           </div>
-          <span  @mousedown.stop="startResize(column)" class="table__resizer"></span>
+          <span v-if="column.field !== 'selected'"  @mousedown.stop="startResize(column)" class="table__resizer"></span>
         </td>
       </tr>
     </thead>
@@ -58,6 +63,9 @@
           <td
             class="table__cell"
             v-for="column in columns"
+            :style="{
+                textAlign: isSelectCheckboxField(column) ? 'center' : null,
+            }"
             :key="`row-${idx}-col${column.field}`"
           >
             <template v-if="isSelectCheckboxField(column)">
@@ -71,6 +79,7 @@
       </template>
     </tbody>
   </table>
+</div>
 </template>
 
 <script setup>
@@ -100,9 +109,9 @@ const startResize = (column) => {
 
   const onMove = (e) => {
     if(e.clientX - lastX.value > 0) {
-      w += 3;
+      w += 7;
     }  else {
-      w -= 3
+      w -= 7
     }
     console.log(w)
     lastX.value = e.clientX
@@ -251,15 +260,71 @@ const isAllRowsSelected = computed({
 
 <style lang="scss">
 $light-gray: #f6f7f9;
+$font-size-regular: 16;
+// Colors
+$black: #0C121E;
+$black-light: #161B27;
+$gray-dark: #566376;
+$black-80: #0C121ECC;
+$gray: #959CB2;
+$gray-medium: #C4CAD4;
+$gray-light: #F6F7F9;
+$white: #FFFFFF;
+$gray-blue: #B4BBC6;
+$blue-primary-button: #DFE8FD;
+$gray-very-light: #BEC3CC;
+
+$blue: #1755E7;
+$blue-medium: #2C61F2;
+$blue-dark: #0F42CF;
+$red: #F54B31;
+$green: #54CC29;
+$orange: #FFA033;
+$purple: #7070FF;
+
+// Animation
+$transition-time: 300ms;
+
 .table {
   width: 100%;
   border: 1px solid #e2e5e8;
   border-radius: 8px;
   border-spacing: 0px;
-  overflow: hidden;
+  // overflow: hidden;
+  color: #0C121E;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  border-collapse: collapse;
+
+  &__wrapper {
+    border: 1px solid #e2e5e8;
+    border-radius: 8px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $white;
+    margin: 4px 0;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $gray-medium;
+    border-radius: 8px;
+    margin-right: 4px;
+  }
+  }
 
   &__head {
     background-color: $light-gray;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   &__head-cell {
@@ -282,11 +347,12 @@ $light-gray: #f6f7f9;
   }
 
   &__cell {
-    padding: 16px;
+    padding: 9px;
     position: relative;
-    &:not(:last-child) {
-      border-right: 1px solid #e2e5e8;
-    }
+    border-left: 1px solid #e2e5e8;
+    // &:not(:last-child) {
+    //   border-right: 1px solid #e2e5e8;
+    // }
     border-bottom: 1px solid #e2e5e8;
   }
 

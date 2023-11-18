@@ -1,6 +1,9 @@
 <template>
   <div>
     <DataTable v-model:columns="columns" v-model:data="data" />
+    <br>
+    <br>
+    <DataTable v-model:columns="normalWidthCols" v-model:data="data" />
   </div>
 </template>
 
@@ -15,10 +18,36 @@ const columns = ref([
   {
     field: "user",
     title: "Пользователь",
+    minWidth: '1000px'
   },
   {
     field: "edited",
     title: "Изменено",
+    minWidth: '1000px'
+  },
+  {
+    field: "date",
+    title: "Дата", width: '1000px'
+  },
+  {
+    field: 'fio',
+    title: 'Фамилия', width: '1000px'
+  }
+]);
+
+const normalWidthCols = ref([
+  {
+    field: "selected",
+  },
+  {
+    field: "user",
+    title: "Пользователь",
+
+  },
+  {
+    field: "edited",
+    title: "Изменено",
+
   },
   {
     field: "date",
@@ -26,9 +55,9 @@ const columns = ref([
   },
   {
     field: 'fio',
-    title: 'Фамилия'
+    title: 'Фамилия', 
   }
-]);
+])
 
 const data = ref([
   { user: "User-0", edited: "18.11.2023", date: "Сегодня", fio: 'Пупкин' },
