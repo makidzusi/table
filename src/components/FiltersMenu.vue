@@ -13,15 +13,16 @@
 
 <script setup>
 import { ref } from "vue";
-import { useFloating, offset, flip, shift } from "@floating-ui/vue";
+import { useFloating, offset, flip, shift, autoPlacement } from "@floating-ui/vue";
 
 const emit = defineEmits(["showFilters", "group"]);
 const props = defineProps(['isFiltesOpened'])
 
 const reference = ref(null);
 const floating = ref(null);
-const { floatingStyles } = useFloating(reference, floating, {
+const { floatingStyles, } = useFloating(reference, floating, {
   middleware: [offset(10), flip(), shift()],
+  strategy: 'fixed'
 });
 
 const isOpened = ref(false);
@@ -32,6 +33,7 @@ const isOpened = ref(false);
   background-color: rgba(12, 18, 30, 0.8);
   border-radius: 8px;
   z-index: 10;
+  position: fixed;
 }
 
 .option {
